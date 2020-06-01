@@ -19,55 +19,43 @@ typedef void (*PHREAD_ENTRY) (void *arg);
 		break;\
 	default: \
 		break; \
-	} \
+	}
 
 #define PT_BLOCK() \
 	return 0; \
-	pos: \
+	pos:
 
 #define PT_RESUME(p) \
 	int event = YIELD; \
-	p(&event); \
-
-
-int resume_phread(PHREAD_ENTRY p)
-{
-	int event = YIELD;
 	p(&event);
-}
 
-int block_phread(void *p)
-{
-}
-
-int create_phread(PHREAD_ENTRY p, void *arg)
-{
-	if (p == NULL) {
-		print("pthread null\n");
-	}
+#define PT_CREATE(p, arg) \
+	if (p == NULL) { \
+		return 0; \
+	} \
 	p(arg);
-}
 
 int phread_one(void *arg)
 {
 	int event = *((int*)arg);
 	PT_INIT(event);
-	print();
+	print("blocking\n");
 	PT_BLOCK();
-
 	print("running\n");
+	return 0;
 }
 
 int phread_two(void *arg)
 {
 	PT_RESUME(phread_one);
 	print("running\n");
+	return 0;
 }
 
 int main()
 {
 	int event = BEGIN;
-	create_phread(phread_one, &event);
-	create_phread(phread_two, &event);
+	PT_CREATE(phread_one, &event);
+	PT_CREATE(phread_two, &event);
 	return 0;
 }
