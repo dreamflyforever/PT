@@ -12,8 +12,12 @@ int phread_one(void *arg)
 
 int phread_two(void *arg)
 {
-	PT_RESUME(phread_one);
+	int event = *((int*)arg);
+	PT_INIT(event);
 	print("running\n");
+	PT_RESUME(phread_one);
+	print("resume\n");
+	PT_DEINIT();
 	return 0;
 }
 
