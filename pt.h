@@ -1,6 +1,6 @@
 #include <stdio.h>
-
-typedef void (*PHREAD_ENTRY) (void *arg);
+#include <time.h>
+#include <stdlib.h>
 
 #define print(format, ...) \
 	{printf("[%s : %s : %d] ", \
@@ -11,23 +11,31 @@ typedef void (*PHREAD_ENTRY) (void *arg);
 #define YIELD 1
 #define BLOCK 2
 
+#define POS(token) pos_##token
+
 #define PT_INIT(event) \
+	static int token;\
 	switch(event) { \
 	case YIELD: \
-		goto pos; \
+		goto POS(token); \
 	case BEGIN: \
 		break;\
 	default: \
 		break; \
 	}
 
+#define PT_DEINIT()\
+	POS(token):
+
 #define PT_BLOCK() \
+	srand(time(NULL)); \
+	token = rand();\
 	return 0; \
-	pos:
+	POS(token):
 
 #define PT_RESUME(p) \
-	int event = YIELD; \
-	p(&event);
+	int e = YIELD; \
+	p(&e);
 
 #define PT_CREATE(p, arg) \
 	if (p == NULL) { \
