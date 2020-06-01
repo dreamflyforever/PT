@@ -1,5 +1,20 @@
 #include <stdio.h>
 
+#define print(format, ...) \
+	{printf("[%s : %s : %d] ", \
+	__FILE__, __func__, __LINE__); \
+	printf(format, ##__VA_ARGS__);}
+
+int phread_one()
+{
+	print("running\n");
+}
+
+int phread_two()
+{
+	print("running\n");
+}
+
 int main()
 {
 	int line = __LINE__;
