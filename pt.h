@@ -2,11 +2,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define print(format, ...) \
-	{printf("[%s : %s : %d] ", \
-	__FILE__, __func__, __LINE__); \
-	printf(format, ##__VA_ARGS__);}
-
 /*protothread status*/
 #define BEGIN 0
 #define YIELD 1
