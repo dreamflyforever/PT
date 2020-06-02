@@ -12,36 +12,40 @@
 	p(arg);
 
 #define BEGIN 0
-#define YIELD 1
 #define BLOCK 2
 
-#define PT_INIT(event) \
+#define PT_INIT() \
+	static int event = BEGIN;\
 	switch (event) \
 	{\
 	case BEGIN: \
 	{
 
+/*notic: use `\` means on the one line*/
 #define PT_BLOCK() \
 	}\
-	case BLOCK: \
-		return 0; \
-	case YIELD: \
+		event = __LINE__;\
+		break; \
+	case __LINE__: \
 	{\
 
 #define PT_DEINIT() \
 	}\
 		break; \
+	default:\
+		print("event: %d\n", event); \
+		break;\
 	}
 
 #define PT_RESUME(p) \
-	int _e = YIELD;\
-	p(&_e);
+	p(NULL);
 
 int phread_one(void *arg)
 {
-	int e = *((int *)arg);
-	PT_INIT(e);
+	PT_INIT();
 	print("block\n")
+	PT_BLOCK();
+	print("run\n");
 	PT_BLOCK();
 	print("run\n");
 	PT_DEINIT();
@@ -50,9 +54,10 @@ int phread_one(void *arg)
 
 int phread_two(void *arg)
 {
-	int e = *((int *)arg);
-	PT_INIT(e);
+	PT_INIT();
 	print("run\n");
+	PT_RESUME(phread_one);
+	print("resume\n");
 	PT_RESUME(phread_one);
 	print("resume\n");
 	PT_DEINIT();
