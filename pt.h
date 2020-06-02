@@ -29,6 +29,7 @@
 	default: \
 		break; \
 	}
+
 /*prothread end*/
 #define PT_DEINIT()\
 	POS(token):
@@ -37,7 +38,7 @@
 #define PT_BLOCK() \
 	srand(time(NULL)); \
 	token = rand();\
-	return 0; \
+	return BLOCK; \
 	POS(token):
 
 /*protothread resume*/
