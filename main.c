@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "pt_label.h"
+//#include "pt_label.h"
 #include "pt_switch.h"
 
 #define print(format, ...) \
@@ -24,6 +24,7 @@ int phread_two(void *arg)
 	PT_RESUME(phread_one);
 	print("resume\n");
 	PT_DEINIT();
+	return 0;
 }
 
 int main()
