@@ -9,11 +9,14 @@ A PT is a program structure that allows a function to suspend execution midway a
 
 ## Implementation
 
-There are various ways to implement coroutines, mainly including:
+There are various API to implement coroutines, mainly including:
 
-	1. Generators: Some programming languages (like Python) use generators to implement coroutines. Generators can suspend and resume using the yield statement during function execution.
-	2. async/await: Modern programming languages (like Python 3.5+, JavaScript) provide native support for coroutines with the async and await keywords.
-	3. Library support: Some programming languages offer libraries (such as asyncio in Python) to simplify the usage and scheduling of coroutines.
+	1. PT_INIT()  
+	2. PT_BLOCK() 
+	3. PT_DEINIT() 
+	4. PT_RESUME() 
+	5. PT_CREATE() 
+see the example 'main.c' file.
 
 ## compile  
 `scons` 
